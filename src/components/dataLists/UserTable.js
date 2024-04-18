@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import DataTable from "react-data-table-component";
-import { Badge } from "reactstrap";
-import Icon from "../icon/Icon";
+import Datatable from "../datatable/Datatable";
+import { Badge, Button } from "reactstrap";
+import { FiEdit } from "react-icons/fi";
+import { MdDeleteOutline } from "react-icons/md";
+import PagesDatatable from "../datatable/PagesDatatable";
 
 const UserTable = ({ ...props }) => {
   const handleEdit = () => {};
   const handleDelete = () => {};
   const getStatusColor = (status) => {
-    if (status === "Active") {
+    if (status === true) {
       return "success"; // Green color for paid
-    } else if (status === "Inactive") {
+    } else if (status === false) {
       return "danger"; // Red color for unpaid
     } else {
       return "warning"; // Orange color for partial paid
@@ -17,9 +19,9 @@ const UserTable = ({ ...props }) => {
   };
 
   const getStatusText = (status) => {
-    if (status === "Active") {
+    if (status === true) {
       return "Active";
-    } else if (status === "Inactive") {
+    } else if (status === false) {
       return "Inactive";
     } else {
       return "---";
@@ -27,57 +29,58 @@ const UserTable = ({ ...props }) => {
   };
   const [columns, setColumns] = useState([
     {
-      name: "User Type",
+      name:<h4>User Type</h4>,
       selector: (row) => row.user_type,
       sortable: true,
+      cell: (row) => <div style={{ width: "20rem" }}>{row.user_type}</div>,
     },
     {
-      name: "User Name",
+      name:<h4>User Name</h4>,
       selector: (row) => row.name,
       sortable: true,
     },
     {
-      name: "E-mail",
+      name:<h4>E-mail</h4>,
       selector: (row) => row.email,
       sortable: true,
     },
     {
-      name: "Mobile",
+      name:<h4>Mobile</h4>,
       selector: (row) => row.mobile,
       sortable: true,
     },
     {
-      name: "Adhaar",
+      name:<h4>Adhaar</h4>,
       selector: (row) => row.aadhar_card,
       sortable: true,
     },
     {
-      name: "Address",
+      name:<h4>Address</h4>,
       selector: (row) => row.address,
       sortable: true,
     },
     {
-      name: "Designation ",
+      name:<h4>Designation </h4>,
       selector: (row) => row.designation_name,
       sortable: true,
     },
     {
-      name: "Departmrnt",
+      name:<h4>Departmrnt</h4>,
       selector: (row) => row.department_name,
       sortable: true,
     },
     {
-      name: "HOD",
+      name:<h4>HOD</h4>,
       selector: (row) => row.hod_name,
       sortable: true,
     },
     {
-      name: "Password",
+      name:<h4>Password</h4>,
       selector: (row) => row.password,
       sortable: true,
     },
     {
-      name: "Status",
+      name:<h4>Status</h4>,
       selector: (row) => row.status,
       cell: (row) => (
         <Badge color={`outline-${getStatusColor(row.status)}`}>
@@ -87,52 +90,38 @@ const UserTable = ({ ...props }) => {
       sortable: true,
     },
     {
-      name: "Action",
+      name:<h4>Action</h4>,
       cell: (row) => (
-        <div>
-          <button
+        <div >
+          <Button
             outline
             color={`warning`}
-            size={`xs`}
             className={`me-1`}
             onClick={() => handleEdit(row)}
           >
             {" "}
-            <Icon name="edit"></Icon>
-          </button>
-          <button
+            <FiEdit />
+          </Button>
+          <Button
             outline
             color={`danger`}
-            size={`xs`}
-            onClick={() => handleDelete(row)}
+            onClick={() => handleEdit(row)}
           >
             {" "}
-            <Icon name="trash"></Icon>
-          </button>
+            <MdDeleteOutline />
+          </Button>
         </div>
       ),
     },
   ]);
 
-  const [data, setData] = useState([
-    {
-      user_type: "static data",
-      name: "Ekta",
-      email: "abc@gmail.com",
-      mobile: "0989098909",
-      aadhar_card: "989898989898",
-      address: "Earth",
-      designation_name: "CEO",
-      department_name: "Cosmetics",
-      hod_name: "Xyz",
-      password: "00000",
-      status: "Active",
-    },
-  ]);
-
   return (
     <>
-      <DataTable columns={columns} data={data} />
+      <PagesDatatable 
+      columns={columns}
+      data={props.data}
+      perPageOpt={[6,12,18]}
+      pagination={6} />
     </>
   );
 };

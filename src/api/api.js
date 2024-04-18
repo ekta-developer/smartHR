@@ -1,4 +1,5 @@
 import axios from "axios";
+import { data } from "jquery";
 
 const BASE_URL ="http://pg.demoquaeretech.in/api/";
 
@@ -22,4 +23,12 @@ export const cardAPI = async (data,token)=>{
 
 export const userDatatableAPI = async (data, token)=>{
   return await axios.post(`${BASE_URL}users-list`,data,token);
+}
+
+export const designationAPI = async (data, token)=>{
+  return await axios.post(`${BASE_URL}designation-list`,data,token);
+}
+
+export const departmentAPI = async (data,token)=>{
+  return await axios.post(`${BASE_URL}department-list`,data,token);
 }

@@ -50,28 +50,17 @@ const EmpDashboard = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <Head title="Employee Dashboard" />
-      <Layout />
-      <div class="page-wrapper">
-        <div>
-          <div className="content container-fluid pb-0">
-            <Header mainHeading={"Welcome Emplyee!"} subHeading={"Dashboard"} />
-            <AdminCard data={data} />
-            <Tower_User data={towerData} userdata={userData} />
-          </div>
-        </div>
-        <LeaveCard />
-        <div className="content container-fluid pb-0">
-          <CardTop />
-          <ProjectCard />
-          <Month_PolicyCard />
-        </div>
-        <Invoice_payments />
-        <Clients_recents />x
-        <CardSetting />
-      </div>
-    </div>
+      
+      <Header mainHeading={"Welcome Emplyee!"} subHeading={"Dashboard"} />
+      <AdminCard data={data} />
+      <Tower_User data={towerData} userdata={userData} />
+      <LeaveCard />
+      <Invoice_payments />
+      <Clients_recents />x
+      <CardSetting />
+    </>
   );
 };
 

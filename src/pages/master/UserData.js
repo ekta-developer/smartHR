@@ -1,42 +1,84 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../layout/Layout";
 import Head from "../../layout/head/Head";
-import UserTable from "../../components/dataLists/UserTable";
 import Header from "../../components/header/Header";
-
+import { userDatatableAPI } from "../../api/api";
+import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineMinus } from "react-icons/ai";
+import { Button, Label } from "reactstrap";
+import UserTable from "../../components/dataLists/UserTable";
+import CreatableSelect from "react-select/creatable";
+import { Form, FormProvider, useForm } from "react-hook-form";
 const UserData = () => {
-  //   const [data,setData]=useState([]);
+  const {register,watch,trigger,setValue}= useForm();
+  const [data, setData] = useState([]);
 
-  //   useEffect(()=>{
-  //     allUsers();
-  //   },[])
+  // State to toggle icons
+  const [isPlus, setIsPlus] = useState(true);
 
-  // const  allUsers=()=>{
-  //   userDatatableAPI()
-  //   .then((res)=>{
-  //     console.log("API data=",res?.data);
-  //     if(res?.data?.status === "Success")
-  //     setData(res?.data?.data);
-  //     else{
-  //       console.log("err",res?.data?.message);
-  //       alert("Connection Error");
-  //     }
-  //   })
-  //   .catch((err)=>{
-  //     console.log(err);
-  //   });
-  // }
+  // Handle button click
+  const handleClick = () => {
+    setIsPlus(!isPlus);
+  };
+
+  useEffect(() => {
+    allUsers();
+  }, []);
+
+  const allUsers = () => {
+    userDatatableAPI()
+      .then((res) => {
+        console.log("API data=", res?.data);
+        if (res?.data?.status === "Success") setData(res?.data?.data);
+        else {
+          console.log("err", res?.data?.message);
+          alert("Connection Error");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handelMasterChange = (selectedOption) => {
+    setValue("master", selectedOption);
+    trigger("master");
+  };
   return (
     <>
-      <Head title={"User Dashboard"} />
-      <Layout />
-      <div class="page-wrapper">
-        <div>
-          <div className="content container-fluid pb-0">
-            <Header mainHeading={"Welcome User!"} subHeading={""} />
-            <UserTable />
+      <div>
+        <Head title={"User Dashboard"} />
+        <Header mainHeading={"User dashboard!"} subHeading={"Dashboard / User"} />
+        <div
+          className="page-header"
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <div className="container-header">
+            <h3 className="container-title mb-0">User</h3>
+          </div>
+          <Button color="primary" onClick={handleClick} size={""}>
+            {isPlus ? <AiOutlinePlus /> : <AiOutlineMinus />}
+          </Button>
+        </div>
+      <form>
+        <div className="form">
+          <Label htmlFor="default-4" className="form-label">
+            Master User:
+          </Label>
+          <div className="select">
+          <CreatableSelect
+                            className=""
+                            id="master"
+                            options={[
+                              { value: "user", label: "User" },
+                              { value: "admin", label: "Admin" },
+                            ]}
+                            {...register("master", { required: true })}
+                            onChange={handelMasterChange}
+                            value={watch(`master`)}
+                          />
           </div>
         </div>
+        </form>
+        <UserTable data={data} />
       </div>
     </>
   );
