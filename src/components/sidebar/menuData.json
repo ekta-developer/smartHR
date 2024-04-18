@@ -1,0 +1,23 @@
+[
+    {
+      "title": "Dashboard",
+      "submenu": [
+        {
+          "title": "Admin dashboard",
+          "url": "/"
+        },
+        {
+          "title": "Employee Dashboard",
+          "url": "/empDashboard"
+        },
+        {
+            "title": "Deals dashboard",
+            "url": "/"
+          },
+          {
+            "title": "Leads Dashboard",
+            "url": "/"
+          }
+      ]
+    }
+  ]
