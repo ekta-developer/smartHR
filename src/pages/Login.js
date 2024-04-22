@@ -20,7 +20,7 @@ const Login = () => {
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch("http://pg.demoquaeretech.in/api/login", {
+      const res = await fetch("http://192.168.23.6:9000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
