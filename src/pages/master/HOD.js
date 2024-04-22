@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
-import Head from "../../layout/head/Head";
-import Header from "../../components/header/Header";
-import { getDepartmentListAPI } from "../../api/api";
-import { RxPlus } from "react-icons/rx";
-import PagesDatatable from "../../components/datatable/PagesDatatable";
+import {React, useEffect, useState } from 'react'
+import Head from '../../layout/head/Head';
+import Header from '../../components/header/Header';
+import { RxPlus } from 'react-icons/rx';
+import PagesDatatable from '../../components/datatable/PagesDatatable';
+import { useForm } from 'react-hook-form';
 import { Badge, Button, Form, Label, Modal, Row } from "reactstrap";
 import { FiEdit } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
+import { getHODListAPI } from '../../api/api';
 import CreatableSelect from "react-select/creatable";
-import { useForm } from "react-hook-form";
 
 const style = { color: "#e85347", fontSize: "11px", fontStyle: "italic" };
 
-const Department = () => {
+const HOD = () => {
+
   const {
     register,
     handleSubmit,
@@ -22,7 +23,7 @@ const Department = () => {
     reset,
     formState: { errors },
   } = useForm();
-
+  
   const [isOpen, setIsOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const toggelModal = () => {
@@ -38,9 +39,9 @@ const Department = () => {
   const handleClose = () => {
     setModalOpen(false);
   };
+
   const handleEdit = () => {};
   const handleDelete = () => {};
-
   const getStatusColor = (status) => {
     if (status === true) {
       return "success"; // Green color for paid
@@ -61,11 +62,21 @@ const Department = () => {
     }
   };
 
-  const [data, setData] = useState([]);
+  const [data,setData]= useState([]);
   const [columns, setColumns] = useState([
     {
-      name: <h4>Designation </h4>,
+      name: <h4>Department </h4>,
       selector: (row) => row.department_name,
+      sortable: true,
+    },
+    {
+      name: <h4>Designation </h4>,
+      selector: (row) => row.designation_name,
+      sortable: true,
+    },
+    {
+      name: <h4>HOD </h4>,
+      selector: (row) => row.hod_name,
       sortable: true,
     },
     {
@@ -100,18 +111,17 @@ const Department = () => {
     },
   ]);
 
-  useEffect(() => {
-    allDepartment();
-  }, []);
+  useEffect(()=>{
+    getHODList();
+  },[]);
 
-  const allDepartment = () => {
-    getDepartmentListAPI()
+  const getHODList = () => {
+    getHODListAPI()
       .then((res) => {
-        console.log("API data=", res?.data);
-        if (res?.data?.status === "Success") setData(res?.data?.data);
-        else {
-          console.log("err", res?.data?.message);
-          alert("Connection Error");
+        if (res.data.status === "Success") {
+          setData(res.data.data);
+        } else {
+          console.log("errr");
         }
       })
       .catch((err) => {
@@ -119,14 +129,7 @@ const Department = () => {
       });
   };
 
-  const handlestatusChange = (selectedOption) => {
-    setValue("status", selectedOption);
-    trigger("status");
-  };
-  // const handelDepartChange = (e) => {
-  //   setValue("name", e.value);
-  //   trigger("name");
-  // };
+  
   const onSubmit = (data) => {
     console.log(data);
     toggelModal(); // Close modal after form submit
@@ -135,11 +138,14 @@ const Department = () => {
   const onError = (errors) => {
     console.log("Errors:", errors);
   };
-
+  const handlestatusChange = (selectedOption) => {
+    setValue("status", selectedOption);
+    trigger("status");
+  };
   return (
     <>
       <div>
-        <Head title={"Department"} />
+        <Head title={"Head of Department"} />
 
         <div
           className="page-header"
@@ -147,8 +153,8 @@ const Department = () => {
         >
           <div className="container-header">
             <Header
-              mainHeading={"Department dashboard!"}
-              subHeading={"Dashboard / Department"}
+              mainHeading={"H.O.D dashboard!"}
+              subHeading={"Dashboard / Head Of Department"}
             />
           </div>
           <button
@@ -159,7 +165,7 @@ const Department = () => {
           >
             <b>
               <RxPlus />
-              &nbsp;Add Department
+              &nbsp;Add Designation
             </b>
           </button>
         </div>
@@ -186,34 +192,52 @@ const Department = () => {
                 <div className="modal-body">
                   <div className="input-block mb-3">
                     <Row>
-                      <Label
-                        className="form-label"
-                        htmlFor="department_name"
-                        style={{ fontWeight: "bold" }}
-                      >
+                      <Label className="form-label" htmlFor="department_name" style={{fontWeight:"bold"}}>
                         Department Name <span className="text-danger">*</span>
                       </Label>
+                      <CreatableSelect
+                              className=""
+                              id="department_name"
+                              // options={departmentList}
+                              {...register("department_name", { required: true })}
+                              // onChange={handleDepartmentChange}
+                              value={watch(`department_name`)}
+                            />
+                            {errors.department_name && <span style={style}>Department field is required</span>}
+                    </Row>
+                    <Row> 
+                    <Label className="form-label" htmlFor="department_name" style={{fontWeight:"bold"}}>
+                        Designation Name <span className="text-danger">*</span>
+                      </Label>
+                      <CreatableSelect
+                              className=""
+                              id="department_name"
+                              // options={DesignationList}
+                              {...register("designation_name", { required: true })}
+                              // onChange={handleDesignationChange}
+                              value={watch(`designation_name`)}
+                            />
+                            {errors.designation_name && <span style={style}>Designation field is required</span>}
+                    </Row>
+                    <Row> 
+                      <Label className="form-label" htmlFor="department_name" style={{fontWeight:"bold"}}>
+                        HOD Name <span className="text-danger">*</span>
+                      </Label>
                       <input
-                      // style={{width:"50%"}}
-                        // className="form-control"
+                        className="form-control"
                         type="text"
-                        placeholder="Enter Department"
-                        id="department_name"
-                        {...register("department_name", { required: true })}
+                        placeholder="Enter HOD"
+                        id="hod_name"
+                        {...register("hod_name", { required: true })}
                         // onChange={handelDepartChange}
-                        // value={watch(`department_name`)}
+                        // value={watch(`hod_name`)}
                       />
-                      {errors.department_name?.type === "required" && (
-                        <span style={style}>Department field is required</span>
+                      {errors.hod_name?.type === "required" && (
+                        <span style={style}>HOD field is required</span>
                       )}
                     </Row>
-
                     <Row>
-                      <Label
-                        className="form-label"
-                        htmlFor="status"
-                        style={{ fontWeight: "bold" }}
-                      >
+                      <Label className="form-label" htmlFor="status"  style={{fontWeight:"bold"}}>
                         Status <span className="text-danger">*</span>
                       </Label>
                       <CreatableSelect
@@ -247,7 +271,7 @@ const Department = () => {
         </Form>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default Department;
+export default HOD;
