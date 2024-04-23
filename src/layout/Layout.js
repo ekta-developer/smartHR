@@ -16,7 +16,7 @@ const Layout = () => {
 
         const config = {
           method: "post",
-          url: "http://192.168.23.6:9000/api/dashboard",
+          url: "http://pg.demoquaeretech.in/api/dashboard",
           headers: {
             Authorization: ftoken,
           },
