@@ -11,12 +11,12 @@ import Tower from "../pages/master/Tower";
 import Room from "../pages/master/Room";
 import ChargeType from "../pages/master/ChargeType";
 import HouseAllote from "../pages/master/HouseAllote";
-import GenerateBill from "../pages/master/GenerateBill";
 import DepositBill from "../pages/master/DepositBill";
 import Transaction from "../pages/master/Transaction";
 import Support from "../pages/Support";
 import Reading from "../pages/report/Reading";
 import UserInfo from "../pages/report/UserInfo";
+import Generatebills from "../pages/master/Generatebills";
 // import '../css/bootstrap.min.css'
 // import '../css/owl.carousel.min.css'
 // import '../css/style.css'
@@ -36,7 +36,7 @@ const Router = () => {
           <Route path="master/room" element={<Room/>}></Route>
           <Route path="master/charge-type" element={<ChargeType/>}></Route>
           <Route path="master/house-allotment" element={<HouseAllote/>}></Route>
-          <Route path="master/generate-bill" element={<GenerateBill/>}></Route>
+          <Route path="master/generate-bill" element={<Generatebills/>}></Route>
           <Route path="master/deposit-bill" element={<DepositBill/>}></Route>
           <Route path="master/transactions"element={<Transaction/>}></Route>
           <Route path="/support" element={<Support/>}></Route>
