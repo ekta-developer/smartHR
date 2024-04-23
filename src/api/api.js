@@ -1,8 +1,8 @@
 import axios from "axios";
 import { data } from "jquery";
 
-const BASE_URL_LIVE ="http://pg.demoquaeretech.in/api/";
-const BASE_URL="http://192.168.23.6:9000/api/"
+const BASE_URL ="http://pg.demoquaeretech.in/api/";
+const BASE_URL_Salman="http://192.168.23.6:9000/api/"
 const userToken = localStorage.getItem("accessToken");
 
 const token = {
@@ -45,4 +45,9 @@ export const getHODListAPI = async (data, token) => {
 //*getTower List
 export const getTowerListAPI = async (token) => {
   return await axios.post(`${BASE_URL}tower-list`, token);
+};
+
+//Bills list  data API-----------------------------------NOT ADDED
+export const getGeneratedBillAPI = async (data, token) => {
+  return await axios.post(`${BASE_URL}allot-generate-bill`, data, token);
 };
